@@ -1,3 +1,3 @@
-const routes = require('./hello.routes.js');
+import routes from './hello.routes.js';
 
-module.exports = routes;
+export default routes;

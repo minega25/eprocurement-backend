@@ -1,8 +1,10 @@
 // Import necessary modules
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const routes = require('./routes'); // Import your main routes file
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+
+import routes from './routes.js';
+import postgres from './config/db.config.js';
 
 // Create an Express app
 const app = express();
@@ -10,6 +12,7 @@ const app = express();
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
+postgres();
 
 // Define the base URL for your API
 const API_BASE_URL = '/api';

@@ -1,12 +1,13 @@
 //
-const express = require('express');
+import express from 'express';
+import helloRoutes from './server/api/hello/index.js';
+
 const router = express.Router();
 
 // Import middleware for user authentication and authorization
-const { authenticateUser, checkUserRole } = require('./middleware/auth');
+// const { authenticateUser, checkUserRole } = require('./middleware/auth');
 
 // Import route handlers
-const helloRoutes = require('./server/api/hello');
 
 // // Protected route (requires authentication)
 // router.use('/api/protected', authenticateUser, (req, res) => {
@@ -26,4 +27,4 @@ const helloRoutes = require('./server/api/hello');
 // Include the routes for specific features/modules
 router.use('/hello/', helloRoutes);
 
-module.exports = router;
+export default router;

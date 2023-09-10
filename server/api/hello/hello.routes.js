@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 // const { authenticateUser, checkUserRole } = require('../middleware/auth');
 
@@ -15,4 +15,4 @@ router.get('/', (req, res) => {
   res.json({ message: 'It works' });
 });
 
-module.exports = router;
+export default router;
