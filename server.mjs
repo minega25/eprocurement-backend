@@ -2,9 +2,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import db from './server/config/db.js';
 
-import routes from './routes.js';
-import postgres from './config/db.config.js';
+import routes from './routes.mjs';
 
 // Create an Express app
 const app = express();
@@ -12,7 +12,6 @@ const app = express();
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
-postgres();
 
 // Define the base URL for your API
 const API_BASE_URL = '/api';
@@ -28,6 +27,18 @@ app.use((err, req, res, next) => {
 
 // Start the server
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+
+const initApp = async () => {
+  console.log('Testing the database connection..');
+  try {
+    await db.authenticate();
+    console.log('Connection has been established successfully.');
+    app.listen(port, () => {
+      console.log(`Server is up and running at: http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error('Unable to connect to the database:', error.original);
+  }
+};
+
+initApp();

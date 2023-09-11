@@ -1,11 +1,12 @@
-//
 import express from 'express';
-import helloRoutes from './server/api/hello/index.js';
+import login from './server/api/login/index.mjs';
+import register from './server/api/register/index.mjs';
+import verifyToken from './server/api/verifyToken/index.mjs';
 
 const router = express.Router();
 
 // Import middleware for user authentication and authorization
-// const { authenticateUser, checkUserRole } = require('./middleware/auth');
+// const { authenticateUser, checkUserRole } = require('./server/middleware/auth');
 
 // Import route handlers
 
@@ -25,6 +26,8 @@ const router = express.Router();
 // );
 
 // Include the routes for specific features/modules
-router.use('/hello/', helloRoutes);
+router.use('/login', login);
+router.use('/register', register);
+router.use('/verify', verifyToken);
 
 export default router;
