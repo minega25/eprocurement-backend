@@ -5,9 +5,21 @@ import sendMail from '../../../utils/sendMail.mjs';
 
 const router = express.Router();
 
+function generateRandomPassword() {
+  var length = 12,
+    charset =
+      '@#$&*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$&*0123456789abcdefghijklmnopqrstuvwxyz',
+    password = '';
+  for (var i = 0, n = charset.length; i < length; ++i) {
+    password += charset.charAt(Math.floor(Math.random() * n));
+  }
+
+  return password;
+}
+
 router.post('/', async (req, res) => {
   try {
-    const { firstName, lastName, password, email, role } = req.body;
+    const { firstName, lastName, email, role } = req.body;
 
     // Check if the username or email already exists
     const existingUser = await Users.findOne({ where: { email } });
@@ -16,18 +28,19 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ message: 'Email already registered.' });
     }
 
-    const hashed = await encryptPassword(password);
-    const verificationToken = generateUniqueToken();
+    const randomPassword = generateRandomPassword();
+
+    const hashed = await encryptPassword(randomPassword);
 
     const subject = 'Activate your E-Proc account';
     const message = `
       Hi there,
       <br />
-      Thank you for signing up for E-Proc. Use below verification code to verify your email:
+      Thank you for signing up for E-Proc. Use below temporary password to interact with E-Proc:
       <br />
-      <b>${verificationToken}</b>
+      <b>${randomPassword}</b>
       <br />
-      This link will expire in 24 hours. If you did not sign up for a Render account, you can safely ignore this email.
+      This password will expire in 24 hours. If you did not sign up for a Render account, you can safely ignore this email.
       Best,
       <br /><br />
       The E-Proc Team
@@ -40,7 +53,7 @@ router.post('/', async (req, res) => {
       lastName,
       password: hashed,
       email,
-      verificationToken,
+      isVerified: true,
       role,
     });
     return res.status(201).json(newUser);

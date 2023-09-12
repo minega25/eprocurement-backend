@@ -1,5 +1,7 @@
 import express from 'express';
 import Proc from '../../../db/models/procurementrequests.js';
+import Users from '../../../db/models/user.js';
+import sendMail from '../../../utils/sendMail.mjs';
 
 const router = express.Router();
 
@@ -38,6 +40,17 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const { items_needed, quantities, budget, preferred_vendor } = req.body;
   console.log(req.user);
+
+  const allStaff = await Users.findAll({ where: { role: 'admin' } });
+  const staffEmails = allStaff.map((staff) => {
+    return staff.email;
+  });
+
+  await sendMail(
+    staffEmails,
+    'New Procurement Request',
+    `A new procurement request has been created. Please review the request and approve or reject it.`
+  );
   try {
     // Find the user with the matching verification token
     const newRequest = await Proc.create({

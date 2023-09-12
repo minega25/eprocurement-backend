@@ -4,6 +4,8 @@ import register from './server/api/register/index.mjs';
 import verifyToken from './server/api/verifyToken/index.mjs';
 import procurementRequests from './server/api/procurementRequests/index.mjs';
 import tenders from './server/api/tenders/index.mjs';
+import registerStaff from './server/api/register_staff/index.mjs';
+import users from './server/api/users/index.mjs';
 
 const router = express.Router();
 
@@ -16,9 +18,15 @@ router.use('/register', register);
 router.use('/verify', verifyToken);
 router.use(
   '/procurement_requests',
-  verifyTokenAndRoles(['admin', 'procurement_officer']),
+  verifyTokenAndRoles(['admin', 'proc_officer']),
   procurementRequests
 );
-router.use('/tenders', verifyTokenAndRoles(['admin', 'bank_user']), tenders);
+router.use(
+  '/tenders',
+  verifyTokenAndRoles(['admin', 'staff', 'proc_officer']),
+  tenders
+);
+router.use('/register_staff', verifyTokenAndRoles(['admin']), registerStaff);
+router.use('/users', verifyTokenAndRoles(['admin']), users);
 
 export default router;

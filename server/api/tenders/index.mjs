@@ -1,5 +1,7 @@
 import express from 'express';
 import Tenders from '../../../db/models/tenders.js';
+import Users from '../../../db/models/user.js';
+import sendMail from '../../../utils/sendMail.mjs';
 
 const router = express.Router();
 
@@ -42,6 +44,18 @@ router.post('/', async (req, res) => {
     title,
   } = req.body;
   try {
+    const allProcOfficers = await Users.findAll({
+      where: { role: 'proc_officer' },
+    });
+    const allProcOfficersEmails = allProcOfficers.map((procOfficer) => {
+      return procOfficer.email;
+    });
+
+    await sendMail(
+      allProcOfficersEmails,
+      'New Tender Request',
+      `A new tender request has been created. Please review the request and approve or reject it.`
+    );
     // Find the user with the matching verification token
     const newTender = await Tenders.create({
       user_id: req.user.email,
