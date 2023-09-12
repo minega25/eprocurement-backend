@@ -19,10 +19,14 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       budget: {
-        type: Sequelize.STRING,
+        type: Sequelize.FLOAT,
       },
       preferred_vendor: {
         type: Sequelize.TEXT,
+      },
+      is_active: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,
@@ -38,3 +42,4 @@ module.exports = {
     await queryInterface.dropTable('Procurementrequests');
   },
 };
+
