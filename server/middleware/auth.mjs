@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import jwt from 'jsonwebtoken';
 
 export function verifyTokenAndRoles(roles) {
   const jwtSecretKey = process.env.JWT_SECRET;

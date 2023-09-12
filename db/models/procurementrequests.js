@@ -12,8 +12,10 @@ const ProcurementRequests = sequelize.define('Procurementrequests', {
   user_id: DataTypes.STRING,
   items_needed: DataTypes.TEXT,
   quantities: DataTypes.TEXT,
-  budget: DataTypes.STRING,
+  budget: DataTypes.FLOAT,
   preferred_vendor: DataTypes.TEXT,
+  is_active: DataTypes.BOOLEAN,
 });
 
 module.exports = ProcurementRequests;
+
