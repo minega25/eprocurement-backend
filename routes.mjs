@@ -3,6 +3,7 @@ import login from './server/api/login/index.mjs';
 import register from './server/api/register/index.mjs';
 import verifyToken from './server/api/verifyToken/index.mjs';
 import procurementRequests from './server/api/procurementRequests/index.mjs';
+import tenders from './server/api/tenders/index.mjs';
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router.use(
   verifyTokenAndRoles(['admin', 'procurement_officer']),
   procurementRequests
 );
+router.use('/tenders', verifyTokenAndRoles(['admin', 'bank_user']), tenders);
 
 export default router;
